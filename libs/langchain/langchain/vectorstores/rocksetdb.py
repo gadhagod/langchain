@@ -248,11 +248,7 @@ class Rockset(VectorStore):
         similar embeddings along with their relevance scores."""
 
         q_str = self._build_query_sql(embedding, distance_func, k, where_str)
-        try:
-            query_response = self._client.Queries.query(sql={"query": q_str})
-        except Exception as e:
-            logger.error("Exception when querying Rockset: %s\n", e)
-            return []
+        query_response = self._client.Queries.query(sql={"query": q_str})
         finalResult: list[Tuple[Document, float]] = []
         for document in query_response.results:
             metadata = {}
